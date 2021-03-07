@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html lang='en'>
+<head>
+<title>Student Manager</title>
+<link rel='stylesheet' href='//cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css'>
+<script src='js/jquery.js'></script>
+<script src='//cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js'></script>
+<script src='jsFileServer?name=abcd.js'></script>
+<script>
+function addStudent()
+{
+let rollNumber=eval($("#rollNumber").val());
+let name=$("#name").val();
+let gender=$("#gender").val();
+let student=new Student();
+student.setRollNumber(rollNumber);
+student.setName(name);
+student.setGender(gender);
+let studentService=new StudentService();
+studentService.add(student).then(function(res,status,obj){
+if(res.isSuccessful) alert("Student added");
+else alert(JSON.stringify(res.exception));
+},function(res,status,obj){
+alert(res.result);
+alert(status);
+alert(obj);
+alert("ERROR");
+});
+}
+
+function updateStudent()
+{
+let rollNumber=eval($("#rollNumber1").val());
+let name=$("#name1").val();
+let gender=$("#gender1").val();
+let student=new Student();
+student.setRollNumber(rollNumber);
+student.setName(name);
+student.setGender(gender);
+let studentService=new StudentService();
+studentService.update(student).then(function(data,status,obj){
+alert(data.result);
+alert("Student updated");
+},function(){
+alert("ERROR");
+});
+}
+
+function deleteStudent()
+{
+let rollNumber=eval($("#rollNumber2").val());
+let studentService=new StudentService();
+studentService.delete(rollNumber).then(function(data,status,obj){
+alert("student deleted");
+},function(){
+alert("ERROR");
+});
+}
+
+function getStudentByRollNumber()
+{
+let rollNumber=eval($("#rollNumber3").val());
+let studentService=new StudentService();
+studentService.getByRollNumber(rollNumber).then(function(data,status,obj){
+alert(JSON.stringify(data));
+},function(){
+alert("ERROR");
+});
+}
+
+function getListOfStudents()
+{
+let rollNumber=eval($("#rollNumber3").val());
+let studentService=new StudentService();
+studentService.getAll().then(function(data,status,obj){
+$("#studentsTable").DataTable({
+"data" : data.result,
+"columns" : [
+{"data": "rollNumber"},
+{"data": "name"},
+{"data": "gender"}
+]
+});
+},function(){
+alert("ERROR");
+});
+}
+</script>
+</head>
+<body>
+<fieldSet>
+<legend>Student Add Form</legend>
+Roll Number : <input type='text' id='rollNumber' name='rollNumber'><br><br>
+Name : <input type='text' id='name' name='name'><br><br>
+Gender : <input type='text' id='gender' name='gender'><br><br>
+<button type='button' onclick='addStudent()'>Add Student</button>
+</fieldSet>
+<br><br>
+<fieldSet>
+<legend>Student Update Form</legend>
+Roll Number : <input type='text' id='rollNumber1' name='rollNumber1'><br><br>
+Name : <input type='text' id='name1' name='name1'><br><br>
+Gender : <input type='text' id='gender1' name='gender1'><br><br>
+<button type='button' onclick='updateStudent()'>Update Student</button>
+</fieldSet>
+<br><br>
+<fieldSet>
+<legend>Student Delete Form</legend>
+Roll Number : <input type='text' id='rollNumber2' name='rollNumber2'><br><br>
+<button type='button' onclick='deleteStudent()'>Delete Student</button>
+</fieldSet>
+<br><br>
+<fieldSet>
+<legend>Get Student By RollNumber </legend>
+Roll Number : <input type='text' id='rollNumber3' name='rollNumber3'><br><br>
+<button type='button' onclick='getStudentByRollNumber()'>Get Student</button>
+</fieldSet>
+<br><br>
+<fieldSet>
+<legend>Get List of Students </legend>
+<table id='studentsTable'>
+<thead>
+<tr>
+<th>Roll Number</th>
+<th>Name</th>
+<th>Gender</th>
+</tr>
+</thead>
+</table>
+<button type='button' onclick='getListOfStudents()'>Get all students</button>
+</fieldSet>
+<br><br>
+</body>
+</html>

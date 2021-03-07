@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html lang='en'>
+<head>
+<title>Testing GSON data</title>
+<script src='js/jquery.js'></script>
+<script>
+function doSomething()
+{
+let firstName=$("#fname").val();
+let lastName=$("#lname").val();
+let dd={
+"firstName" : firstName,
+"lastName" : lastName
+};
+alert(dd);
+$.ajax({
+url : "schoolservice/CustomerDAO/addCustomer",
+type : "POST",
+contentType : "application/json",
+data : JSON.stringify(dd),
+success : function()
+{
+alert("done");
+}
+});
+}
+</script>
+</head>
+<body>
+<h3>Customer Add Form</h3>
+First Name: <input type='text' id='fname' name='fname'><br>
+Last Name: <input type='text' id='lname' name='lname'><br>
+<button type='button' onclick='doSomething()'>Add Customer</button>
+</body>
+</html>
